@@ -58,7 +58,7 @@ const Dashboard = () => {
       transition: Bounce,
     })
   }
-
+console.log("FIELDS", FIELDS);
   return (
     <>
       <ToastContainer position="top-right" autoClose={4000} theme="dark" />

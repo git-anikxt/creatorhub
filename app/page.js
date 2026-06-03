@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, Heart, Users, TrendingUp, Zap, Shield, Globe } from "lucide-react";
 

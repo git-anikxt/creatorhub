@@ -5,16 +5,21 @@ import Payment from "@/models/Payment"
 import connectDb from "@/db/connectDb"
 import User from "@/models/User"
 
-
 export const initiate = async (amount, to_username, paymentform) => {
     await connectDb()
-    // fetch the secret of the user who is getting the payment 
-    let user = await User.findOne({username: to_username})
+
+    let user = await User.findOne({ username: to_username })
+
+    if (!user) {
+        throw new Error("User not found")
+    }
+
     const secret = user.razorpaysecret
 
-    var instance = new Razorpay({ key_id: user.razorpayid, key_secret: secret })
-
-
+    const instance = new Razorpay({
+        key_id: user.razorpayid,
+        key_secret: secret
+    })
 
     let options = {
         amount: Number.parseInt(amount),
@@ -23,50 +28,79 @@ export const initiate = async (amount, to_username, paymentform) => {
 
     let x = await instance.orders.create(options)
 
-    // create a payment object which shows a pending payment in the database
-    await Payment.create({ oid: x.id, amount: amount/100, to_user: to_username, name: paymentform.name, message: paymentform.message })
+    await Payment.create({
+        oid: x.id,
+        amount: amount / 100,
+        to_user: to_username,
+        name: paymentform.name,
+        message: paymentform.message
+    })
 
     return x
-
 }
-
 
 export const fetchuser = async (username) => {
     await connectDb()
-    let u = await User.findOne({ username: username })
-    let user = u.toObject({ flattenObjectIds: true })
-    return user
+
+    let u = await User.findOne({ username })
+
+    if (!u) {
+        console.log("USER NOT FOUND:", username)
+        return null
+    }
+
+    return u.toObject({
+        flattenObjectIds: true
+    })
 }
 
 export const fetchpayments = async (username) => {
     await connectDb()
-    // find all payments sorted by decreasing order of amount and flatten object ids
-    let p = await Payment.find({ to_user: username, done:true }).sort({ amount: -1 }).limit(10).lean()
+
+    let p = await Payment.find({
+        to_user: username,
+        done: true
+    })
+        .sort({ amount: -1 })
+        .limit(10)
+        .lean()
+
     return p
 }
 
 export const updateProfile = async (data, oldusername) => {
     await connectDb()
+
     let ndata = Object.fromEntries(data)
 
-    // If the username is being updated, check if username is available
     if (oldusername !== ndata.username) {
-        let u = await User.findOne({ username: ndata.username })
+        let u = await User.findOne({
+            username: ndata.username
+        })
+
         if (u) {
-            return { error: "Username already exists" }
-        }   
-        await User.updateOne({email: ndata.email}, ndata)
-        // Now update all the usernames in the Payments table 
-        await Payment.updateMany({to_user: oldusername}, {to_user: ndata.username})
-        
+            return {
+                error: "Username already exists"
+            }
+        }
+
+        await User.updateOne(
+            { email: ndata.email },
+            ndata
+        )
+
+        await Payment.updateMany(
+            { to_user: oldusername },
+            { to_user: ndata.username }
+        )
+    } else {
+        await User.updateOne(
+            { email: ndata.email },
+            ndata
+        )
     }
-    else{
 
-        
-        await User.updateOne({email: ndata.email}, ndata)
+    return {
+        success: true
     }
-
-
 }
-
-

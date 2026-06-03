@@ -1,7 +1,8 @@
 import dns from "node:dns";
 import mongoose from "mongoose";
 
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+console.log("CUSTOM DNS APPLIED");
 
 const connectDb = async () => {
   try {
@@ -15,8 +16,12 @@ const connectDb = async () => {
       return mongoose.connection;
     }
 
+    console.log("URI:", uri);
+
     const conn = await mongoose.connect(uri);
+
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+
     return conn;
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
