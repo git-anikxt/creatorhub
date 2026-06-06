@@ -2,7 +2,7 @@
 import React, { useEffect } from "react"
 import { useSession, signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
-
+import { FcGoogle } from "react-icons/fc";
 const Login = () => {
   const { data: session } = useSession()
   const router = useRouter()
@@ -80,18 +80,19 @@ const Login = () => {
 
           {/* Google */}
           <button
-            onClick={() => signIn("google")}
-            className="w-full flex items-center justify-center gap-3 py-3 px-5 font-semibold text-white transition-all"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "12px",
-              cursor: "pointer",
-            }}
-          >
-            <span style={{ fontSize: "18px" }}>G</span>
-            Continue with Google
-          </button>
+  onClick={() => signIn("google")}
+  className="w-full flex items-center justify-center gap-3 py-3 px-5 font-semibold transition-all"
+  style={{
+    background: "#ffffff",
+    color: "#1f2937",
+    border: "1px solid #e5e7eb",
+    borderRadius: "12px",
+    cursor: "pointer",
+  }}
+>
+  <FcGoogle size={22} />
+  Continue with Google
+</button>
 
           {/* Trust */}
           <div
