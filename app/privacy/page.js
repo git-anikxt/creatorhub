@@ -165,7 +165,7 @@ export default function PrivacyPolicy() {
         </ul>
 
         <h2 className="mt-10 text-2xl font-semibold">
-          9. Children's Privacy
+          9. Children&apos;s Privacy
         </h2>
 
         <p className="mt-3">

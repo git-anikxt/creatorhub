@@ -125,7 +125,7 @@ export default function TermsOfService() {
         </h2>
 
         <p className="mt-3">
-          FundFlow is provided on an "as-is" basis. We do not guarantee
+          FundFlow is provided on an &quot;as-is&quot; basis. We do not guarantee
           uninterrupted availability or error-free operation of the platform.
         </p>
 
