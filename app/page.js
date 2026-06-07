@@ -12,7 +12,7 @@ const founders = [
     avatar: "A",
     username: "aniketsharma",
     github: "https://github.com/aniketsharma",
-    linkedin: "https://linkedin.com/in/aniketsharma",
+    linkedin: "https://linkedin.com/in/anikxtsharma",
     about:
       "Building AI workflow automations, modern web applications, creator tools, and intuitive user experiences. Passionate about full-stack development, automation, and product design.",
   },
